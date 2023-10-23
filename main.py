@@ -2,6 +2,7 @@
 # load the modules
 import pygame as pg
 import constants as c
+import random
 from char import Character
 from resources import Movement
 from item import Item
@@ -21,6 +22,8 @@ screen.fill(c.BG_BLACK)
 player = Character()
 # initialize the item
 item = Item()
+items = []
+items.append(item)
 # initialize the movement
 movement_handler = Movement()
 
@@ -37,6 +40,11 @@ while running:
 #= Event-Handling =#
 #==================#
 
+    for item in items:
+        if player.segments[0].colliderect(item.rect):
+            item.set_random_position()
+            player.grow(dx, dy)
+            
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
@@ -53,12 +61,6 @@ while running:
     if keys[pg.K_ESCAPE]:
         running = False
 
-#=================#
-#= Screen-Update =#
-#=================#
-
-
-    
 #================#
 #= Draw-Screen- =#
 #================#
@@ -67,7 +69,8 @@ while running:
     player.draw(screen)
     
     # Draw a rectangle to represent the item
-    item.draw(screen)
+    for item in items:
+        item.draw(screen)
 
     # set the game clock
     clock.tick(60) # 60 fps
