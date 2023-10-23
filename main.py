@@ -4,7 +4,7 @@ import pygame as pg
 import constants as c
 import random
 from char import Character
-from resources import Movement
+from resources import Movement, Helper
 from item import Item
 
 # initialize pg
@@ -24,6 +24,8 @@ player = Character()
 item = Item()
 items = []
 items.append(item)
+# initialize the helper functions
+helper = Helper(player, item)
 # initialize the movement
 movement_handler = Movement()
 
@@ -39,6 +41,11 @@ while running:
 #==================#
 #= Event-Handling =#
 #==================#
+    
+    # Check for collision with wall
+    if player.check_collision():
+        print("Collision!")
+        helper.restart_game()
 
     for item in items:
         if player.segments[0].colliderect(item.rect):

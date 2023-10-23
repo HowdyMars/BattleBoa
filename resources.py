@@ -21,6 +21,11 @@ class Movement():
         elif keys[pg.K_RIGHT] or keys[pg.K_d]:
             if self.direction != "LEFT":
                 self.direction = "RIGHT"
+                
+        opposite_directions = {"UP": "DOWN", "DOWN": "UP", "LEFT": "RIGHT", "RIGHT": "LEFT"}
+        new_direction = self.direction
+        if new_direction and new_direction != opposite_directions[self.direction]:
+            self.direction = new_direction
         
     def move(self):
         dx, dy = 0, 0
@@ -34,3 +39,15 @@ class Movement():
             dx = self.speed
 
         return dx, dy
+    
+class Helper():
+    def __init__(self, player, item):
+        self.player = player
+        self.item = item
+    
+    def restart_game(self):
+        # reinitalize the player and item
+        self.player.__init__()
+        self.item.__init__()
+
+        
