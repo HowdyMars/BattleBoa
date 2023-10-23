@@ -2,33 +2,17 @@
 # load the modules
 import pygame as pg
 import constants as c
-import random
-from char import Character
-from resources import Movement, Helper
-from item import Item
+from resources import InitializeGame
 
-# initialize pg
-pg.init()
-# initialize the display
-screen = pg.display.set_mode((800, 600))
-pg.display.set_caption("BattleBoa")
-# set the game clock
-clock = pg.time.Clock()
-# set the game loop
-running = True
-# Fill background
-screen.fill(c.BG_BLACK)
-# initialize the character
-player = Character()
-# initialize the item
-item = Item()
-items = []
-items.append(item)
-# initialize the helper functions
-helper = Helper(player, item)
-# initialize the movement
-movement_handler = Movement()
+game = InitializeGame()
 
+# Accessing the properties
+screen = game.screen
+clock = game.clock
+player = game.player
+items = game.items
+helper = game.helper
+movement_handler = game.movement_handler
 #==================#
 #= Main-Game-Loop =#
 #==================#

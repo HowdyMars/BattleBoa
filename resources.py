@@ -1,7 +1,36 @@
 # This file will handle the resouce handling for the game, like images, sounds, etc.
 import pygame as pg
 import constants as c
+from char import Character
+from item import Item
 
+class InitializeGame:
+    def __init__(self):
+        pg.init()
+        
+        self.screen = pg.display.set_mode((800, 600))
+        pg.display.set_caption("BattleBoa")
+        self.clock = pg.time.Clock()
+        self.screen.fill(c.BG_BLACK)
+        
+        self.player = Character()
+        self.item = Item()
+        self.items = [self.item]
+        
+def initialize_game():
+    pg.init()
+    screen = pg.display.set_mode((800, 600))
+    pg.display.set_caption("BattleBoa")
+    clock = pg.time.Clock()
+    screen.fill(c.BG_BLACK)
+    
+    player = Character()
+    item = Item()
+    items = [item]  # Using a list comprehension
+    helper = Helper(player, item)
+    movement_handler = Movement()
+
+    return screen, clock, player, item, items, helper, movement_handler
 class Movement():
     def __init__(self, speed=c.DEFAULT_SPEED):   # setting a default speed of 5
         self.x, self.y = 0, 0
