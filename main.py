@@ -2,7 +2,7 @@
 # load the modules
 import pygame as pg
 import constants as c
-from resources import InitializeGame
+from resources import InitializeGame # I am initializing all the game resources in this module | keeping main.py clean
 
 game = InitializeGame()
 
@@ -13,6 +13,9 @@ player = game.player
 items = game.items
 helper = game.helper
 movement_handler = game.movement_handler
+
+running = True
+
 #==================#
 #= Main-Game-Loop =#
 #==================#

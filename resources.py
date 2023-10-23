@@ -16,21 +16,23 @@ class InitializeGame:
         self.player = Character()
         self.item = Item()
         self.items = [self.item]
+        self.helper = Helper(self.player, self.item)
+        self.movement_handler = Movement()
         
-def initialize_game():
-    pg.init()
-    screen = pg.display.set_mode((800, 600))
-    pg.display.set_caption("BattleBoa")
-    clock = pg.time.Clock()
-    screen.fill(c.BG_BLACK)
-    
-    player = Character()
-    item = Item()
-    items = [item]  # Using a list comprehension
-    helper = Helper(player, item)
-    movement_handler = Movement()
+    def initialize_game():
+        pg.init()
+        screen = pg.display.set_mode((800, 600))
+        pg.display.set_caption("BattleBoa")
+        clock = pg.time.Clock()
+        screen.fill(c.BG_BLACK)
+        
+        player = Character()
+        item = Item()
+        items = [item]  # Using a list comprehension
+        helper = Helper(player, item)
+        movement_handler = Movement()
 
-    return screen, clock, player, item, items, helper, movement_handler
+        return screen, clock, player, item, items, helper, movement_handler
 class Movement():
     def __init__(self, speed=c.DEFAULT_SPEED):   # setting a default speed of 5
         self.x, self.y = 0, 0

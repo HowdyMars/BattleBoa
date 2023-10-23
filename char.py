@@ -29,7 +29,7 @@ class Character(pg.sprite.Sprite):
     # define draw method
     def draw(self, screen):
         for segment in self.segments:
-            pg.draw.rect(screen, c.PLAYER_RECT_RED, segment, 1)
+            pg.draw.rect(screen, c.PLAYER_RECT_GREEN, segment, 1)
         
     def move(self, dx, dy):
         # move head
