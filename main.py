@@ -12,7 +12,7 @@ display_caption = game.display_caption
 screen = game.screen
 clock = game.clock
 screen_fill = game.screen_fill
-# player = game.player
+player = game.player
 player2 = game.player2
 items = game.items
 movement_handler = game.movement_handler
@@ -33,8 +33,8 @@ while running:
 #==================#
     
     # Check for collision with wall
-    # if player.check_collision():
-    #     game.restart_game()
+    if player.check_collision():
+        game.restart_game()
         
     # Check for collision with [player2]
     # for segment in player2.segments:
@@ -42,9 +42,9 @@ while running:
     #         game.restart_game()
     # # Check for collision with item
     for item in items:
-        # if player.segments[0].colliderect(item.rect):
-        #     item.set_random_position()
-        #     player.grow(dx, dy)
+        if player.segments[0].colliderect(item.rect):
+            item.set_random_position()
+            player.grow(dx, dy)
         if player2.segments[0].colliderect(item.rect):
             item.set_random_position()
             player2.grow(dx, dy)
@@ -57,7 +57,7 @@ while running:
     dx, dy = movement_handler.move()
     ai_dx, ai_dy = player2.ai(screen, items[0])
     player2.move(ai_dx, ai_dy)
-    # player.move(dx, dy)
+    player.move(dx, dy)
             
 #================#
 #= Key-Handling =#
@@ -72,7 +72,7 @@ while running:
 #================#
 
     # # Draw a rectangle to represent the player
-    # player.draw(screen)
+    player.draw(screen)
     # Draw a rectangle to represent the player2
     player2.draw(screen)
     
