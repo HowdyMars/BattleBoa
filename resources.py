@@ -6,39 +6,32 @@ from item import Item
 
 class InitializeGame:
     def __init__(self):
-        pg.init()
-        
+        self.init = pg.init()
         self.screen = pg.display.set_mode((800, 600))
-        pg.display.set_caption("BattleBoa")
-        self.clock = pg.time.Clock()
-        self.screen.fill(c.BG_BLACK)
-        
-        self.player = Character()
-        self.item = Item()
-        self.items = [self.item]
-        self.helper = Helper(self.player, self.item)
+        self.display_caption = pg.display.set_caption("BattleBoa")
+        self.screen_fill = self.screen.fill(c.BG_BLACK)
         self.movement_handler = Movement()
         
-    def initialize_game():
-        pg.init()
-        screen = pg.display.set_mode((800, 600))
-        pg.display.set_caption("BattleBoa")
-        clock = pg.time.Clock()
-        screen.fill(c.BG_BLACK)
+        self.set_up_game()
         
-        player = Character()
-        item = Item()
-        items = [item]  # Using a list comprehension
-        helper = Helper(player, item)
-        movement_handler = Movement()
+    def set_up_game(self):
+        self.clock = pg.time.Clock()
+        self.player = Character(player=True)
+        self.player2 = Character(100, 100)
+        self.item = Item()
+        self.items = [self.item]
 
-        return screen, clock, player, item, items, helper, movement_handler
+    def restart_game(self):
+        # reinitalize the player and item
+        self.player.__init__(player=True)
+        self.player2.__init__(100, 100)
+        self.item.__init__()
 class Movement():
     def __init__(self, speed=c.DEFAULT_SPEED):   # setting a default speed of 5
         self.x, self.y = 0, 0
         self.speed = speed
         self.direction = "RIGHT"
-        
+  
     def update_direction(self, keys):
         if keys[pg.K_UP] or keys[pg.K_w]:
             if self.direction != "DOWN":
@@ -71,14 +64,5 @@ class Movement():
 
         return dx, dy
     
-class Helper():
-    def __init__(self, player, item):
-        self.player = player
-        self.item = item
-    
-    def restart_game(self):
-        # reinitalize the player and item
-        self.player.__init__()
-        self.item.__init__()
 
         

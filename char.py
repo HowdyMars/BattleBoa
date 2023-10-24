@@ -4,11 +4,12 @@ import constants as c
 from collections import deque
 
 class Character(pg.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, start_x=400, start_y=300, player=False):
         super().__init__()  # This is another way to call the parent class's __init__ method
+        self.player = player
         self.original_dimensions = (40, 40) # width, height to test
-        start_x = 400 - self.original_dimensions[0] // 2
-        start_y = 300 - self.original_dimensions[1] // 2
+        start_x = start_x - self.original_dimensions[0] // 2
+        start_y = start_y - self.original_dimensions[1] // 2
         self.rect = pg.Rect(start_x, start_y, 40, 40)
         self.segments = [self.rect] # This will be a list of all the segments of the snake
         self.buffer_length = 10 # This is the buffer between segments
@@ -70,7 +71,29 @@ class Character(pg.sprite.Sprite):
             self.segments[0].width - 5, 
             self.segments[0].height - 5
         )
-        for segment in self.segments[2:]:
-            if head_rect_centered.colliderect(segment):
-                return True
-        return False
+        if self.player:
+            for segment in self.segments[2:]:
+                if head_rect_centered.colliderect(segment):
+                    return True
+            return False
+        
+    def ai(self, screen, item):
+        dx, dy = 0, 0
+        x_distance = abs(self.rect.centerx - item.rect.centerx)
+        y_distance = abs(self.rect.centery - item.rect.centery)
+
+        if x_distance > y_distance:  # Horizontal movement
+            if self.rect.centerx < item.rect.left:
+                dx = c.DEFAULT_SPEED
+            elif self.rect.centerx > item.rect.right:
+                dx = -c.DEFAULT_SPEED
+        elif y_distance >= x_distance:  # Vertical movement
+            if self.rect.centery < item.rect.top:
+                dy = c.DEFAULT_SPEED
+            elif self.rect.centery > item.rect.bottom:
+                dy = -c.DEFAULT_SPEED
+
+        # draw line of sight for visualization | testing
+        pg.draw.line(screen, c.PLAYER_RECT_GREEN, self.segments[0].center, item.rect.center, 1)
+
+        return dx, dy

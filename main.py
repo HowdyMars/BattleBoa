@@ -7,11 +7,14 @@ from resources import InitializeGame # I am initializing all the game resources 
 game = InitializeGame()
 
 # Accessing the properties
+init = game.init
+display_caption = game.display_caption
 screen = game.screen
 clock = game.clock
-player = game.player
+screen_fill = game.screen_fill
+# player = game.player
+player2 = game.player2
 items = game.items
-helper = game.helper
 movement_handler = game.movement_handler
 
 running = True
@@ -30,22 +33,31 @@ while running:
 #==================#
     
     # Check for collision with wall
-    if player.check_collision():
-        print("Collision!")
-        helper.restart_game()
-
+    # if player.check_collision():
+    #     game.restart_game()
+        
+    # Check for collision with [player2]
+    # for segment in player2.segments:
+    #     if player.segments[0].colliderect(segment):
+    #         game.restart_game()
+    # # Check for collision with item
     for item in items:
-        if player.segments[0].colliderect(item.rect):
+        # if player.segments[0].colliderect(item.rect):
+        #     item.set_random_position()
+        #     player.grow(dx, dy)
+        if player2.segments[0].colliderect(item.rect):
             item.set_random_position()
-            player.grow(dx, dy)
-            
+            player2.grow(dx, dy)
+        
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
             
     movement_handler.update_direction(pg.key.get_pressed())
     dx, dy = movement_handler.move()
-    player.move(dx, dy)
+    ai_dx, ai_dy = player2.ai(screen, items[0])
+    player2.move(ai_dx, ai_dy)
+    # player.move(dx, dy)
             
 #================#
 #= Key-Handling =#
@@ -59,8 +71,10 @@ while running:
 #= Draw-Screen- =#
 #================#
 
-    # Draw a rectangle to represent the player
-    player.draw(screen)
+    # # Draw a rectangle to represent the player
+    # player.draw(screen)
+    # Draw a rectangle to represent the player2
+    player2.draw(screen)
     
     # Draw a rectangle to represent the item
     for item in items:
