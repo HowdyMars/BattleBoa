@@ -77,21 +77,38 @@ class Character(pg.sprite.Sprite):
                     return True
             return False
         
+
     def ai(self, screen, item):
         dx, dy = 0, 0
-        x_distance = abs(self.rect.centerx - item.rect.centerx)
-        y_distance = abs(self.rect.centery - item.rect.centery)
-
-        if x_distance > y_distance:  # Horizontal movement
-            if self.rect.centerx < item.rect.left:
-                dx = c.DEFAULT_SPEED
-            elif self.rect.centerx > item.rect.right:
-                dx = -c.DEFAULT_SPEED
-        elif y_distance >= x_distance:  # Vertical movement
-            if self.rect.centery < item.rect.top:
+        # Distance from boundaries
+        dist_left = self.rect.left
+        dist_right = 800 - self.rect.right
+        dist_top = self.rect.top
+        dist_bottom = 600 - self.rect.bottom
+        
+        # Decide if the snake needs to change direction due to proximity to a boundary
+        if dist_left < c.DEFAULT_SPEED and dx == -c.DEFAULT_SPEED:
+            dy = c.DEFAULT_SPEED if self.rect.centery <= 300 else -c.DEFAULT_SPEED
+            dx = 0
+        elif dist_right < c.DEFAULT_SPEED and dx == c.DEFAULT_SPEED:
+            dy = c.DEFAULT_SPEED if self.rect.centery <= 300 else -c.DEFAULT_SPEED
+            dx = 0
+        elif dist_top < c.DEFAULT_SPEED and dy == -c.DEFAULT_SPEED:
+            dx = c.DEFAULT_SPEED if self.rect.centerx <= 400 else -c.DEFAULT_SPEED
+            dy = 0
+        elif dist_bottom < c.DEFAULT_SPEED and dy == c.DEFAULT_SPEED:
+            dx = c.DEFAULT_SPEED if self.rect.centerx <= 400 else -c.DEFAULT_SPEED
+            dy = 0
+        else:
+            # Original AI logic
+            if self.rect.centery < item.rect.centery:
                 dy = c.DEFAULT_SPEED
-            elif self.rect.centery > item.rect.bottom:
+            elif self.rect.centery > item.rect.centery:
                 dy = -c.DEFAULT_SPEED
+            if self.rect.centerx < item.rect.centerx:
+                dx = c.DEFAULT_SPEED
+            elif self.rect.centerx > item.rect.centerx:
+                dx = -c.DEFAULT_SPEED
 
         # draw line of sight for visualization | testing
         pg.draw.line(screen, c.PLAYER_RECT_GREEN, self.segments[0].center, item.rect.center, 1)
