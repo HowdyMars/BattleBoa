@@ -7,25 +7,24 @@ from item import Item
 class InitializeGame:
     def __init__(self):
         self.init = pg.init()
-        self.screen = pg.display.set_mode((800, 600))
-        self.display_caption = pg.display.set_caption("BattleBoa")
-        self.screen_fill = self.screen.fill(c.BG_BLACK)
-        self.movement_handler = Movement()
-        
-        self.set_up_game()
-        
-    def set_up_game(self):
+        self.screen = pg.display.set_mode((800, 600), pg.HWSURFACE | pg.DOUBLEBUF | pg.SCALED, vsync=1)
         self.clock = pg.time.Clock()
         self.player = Character(player=True)
         self.player2 = Character(400, 300)
-        self.item = Item()
-        self.items = [self.item]
+        self.items = Item.create_item()
+        self.display_caption = pg.display.set_caption("BattleBoa")
+        self.screen_fill = self.screen.fill(c.BG_BLACK)
+        self.movement_handler = Movement()
+
 
     def restart_game(self):
         # reinitalize the player and item
         self.player.__init__(player=True)
         self.player2.__init__(400, 300)
-        self.item.__init__()
+        self.items = Item.create_item()
+        for item in self.items:
+            print(item.rect.topleft)
+            item.set_random_position()
 class Movement():
     def __init__(self, speed=c.DEFAULT_SPEED):   # setting a default speed of 5
         self.x, self.y = 0, 0
@@ -63,6 +62,6 @@ class Movement():
             dx = self.speed
 
         return dx, dy
-    
+        
 
         

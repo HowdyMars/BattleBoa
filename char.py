@@ -12,8 +12,10 @@ class Character(pg.sprite.Sprite):
         start_y = start_y - self.original_dimensions[1] // 2
         self.rect = pg.Rect(start_x, start_y, 40, 40)
         self.segments = [self.rect] # This will be a list of all the segments of the snake
-        self.buffer_length = 10 # This is the buffer between segments
+        self.buffer_length = 7 # This is the buffer between segments
         self.positions = deque(maxlen=1000)
+        self.last_dx = 0
+        self.last_dy = c.DEFAULT_SPEED
         
     def flip_rect(self, dx, dy): # for testing
         if dx != 0:  # Moving horizontally
@@ -29,10 +31,32 @@ class Character(pg.sprite.Sprite):
     
     # define draw method
     def draw(self, screen):
+        # head = self.segments[0]
+        # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
         for segment in self.segments:
             pg.draw.rect(screen, c.PLAYER_RECT_GREEN, segment)
+            
+    def follow_mouse(self):
+        mouse_x, mouse_y = pg.mouse.get_pos()
+        # Calculate the difference between the mouse and the player position
+        dx = mouse_x - self.rect.centerx
+        dy = mouse_y - self.rect.centery
+
+        # Normalize the movement if it's greater than the character's speed
+        magnitude = (dx ** 2 + dy ** 2) ** 0.5
+        if magnitude > 0:
+            dx, dy = (dx / magnitude) * c.DEFAULT_SPEED, (dy / magnitude) * c.DEFAULT_SPEED
+            self.last_dx, self.last_dy = dx, dy
+            
+        else:
+            dx, dy = self.last_dx, self.last_dy
+
+        return dx, dy
         
     def move(self, dx, dy):
+        dx, dy = 0,0
+        if self.player:
+            dx, dy = self.follow_mouse()
         # move head
         self.flip_rect(dx, dy)
         self.rect.move_ip(dx, dy)
@@ -42,7 +66,6 @@ class Character(pg.sprite.Sprite):
         for i, segment in enumerate(self.segments[1:], start=1):
             segment.topleft = self.positions[i * self.buffer_length]
             
-        
     def grow(self, dx, dy):
         tail = self.segments[-1].copy() # get the last segment
         # Adjust tail's position based on movement direction
@@ -64,18 +87,18 @@ class Character(pg.sprite.Sprite):
         # Check top and bottom boundaries
         if self.segments[0].top < 0 or self.segments[0].bottom > 600:
             return True
-        # Check for collision with self
-        head_rect_centered = pg.Rect(
-            self.segments[0].x + 5, 
-            self.segments[0].y + 5, 
-            self.segments[0].width - 5, 
-            self.segments[0].height - 5
-        )
-        if self.player:
-            for segment in self.segments[2:]:
-                if head_rect_centered.colliderect(segment):
-                    return True
-            return False
+        # # Check for collision with self
+        # head_rect_centered = pg.Rect(
+        #     self.segments[0].x + 5, 
+        #     self.segments[0].y + 5, 
+        #     self.segments[0].width - 5, 
+        #     self.segments[0].height - 5
+        # )
+        # if self.player:
+        #     for segment in self.segments[2:]:
+        #         if head_rect_centered.colliderect(segment):
+        #             return True
+        #     return False
         
 
     def ai(self, screen, item):

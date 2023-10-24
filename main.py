@@ -16,7 +16,6 @@ player = game.player
 player2 = game.player2
 items = game.items
 movement_handler = game.movement_handler
-
 running = True
 
 #==================#
@@ -53,11 +52,12 @@ while running:
         if event.type == pg.QUIT:
             running = False
             
-    movement_handler.update_direction(pg.key.get_pressed())
-    dx, dy = movement_handler.move()
-    ai_dx, ai_dy = player2.ai(screen, items[0])
-    player2.move(ai_dx, ai_dy)
-    player.move(dx, dy)
+    # movement_handler.update_direction(pg.key.get_pressed())
+    # dx, dy = movement_handler.move()
+    dx, dy = player.follow_mouse()
+    player.move(dx,dy)    
+    # ai_dx, ai_dy = player2.ai(screen, items[0])
+    # player2.move(ai_dx, ai_dy)
             
 #================#
 #= Key-Handling =#
@@ -74,7 +74,7 @@ while running:
     # # Draw a rectangle to represent the player
     player.draw(screen)
     # Draw a rectangle to represent the player2
-    player2.draw(screen)
+    # player2.draw(screen)
     
     # Draw a rectangle to represent the item
     for item in items:

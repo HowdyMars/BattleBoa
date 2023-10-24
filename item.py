@@ -7,6 +7,8 @@ class Item(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.rect = pg.Rect(200, 200, 30, 30)
+        self.set_random_position()
+        
         
     def draw(self, screen):
         pg.draw.rect(screen, c.PLAYER_RECT_RED, self.rect)
@@ -20,3 +22,7 @@ class Item(pg.sprite.Sprite):
         random_x = random.randint(0, 800 - self.rect.width)
         random_y = random.randint(0, 600 - self.rect.height)
         self.rect.topleft = (random_x, random_y) 
+        
+    @classmethod
+    def create_item(cls, count=2):
+        return [cls() for _ in range(count)]
