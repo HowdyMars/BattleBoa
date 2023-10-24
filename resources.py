@@ -17,14 +17,14 @@ class InitializeGame:
     def set_up_game(self):
         self.clock = pg.time.Clock()
         self.player = Character(player=True)
-        self.player2 = Character(100, 100)
+        self.player2 = Character(400, 300)
         self.item = Item()
         self.items = [self.item]
 
     def restart_game(self):
         # reinitalize the player and item
         self.player.__init__(player=True)
-        self.player2.__init__(100, 100)
+        self.player2.__init__(400, 300)
         self.item.__init__()
 class Movement():
     def __init__(self, speed=c.DEFAULT_SPEED):   # setting a default speed of 5

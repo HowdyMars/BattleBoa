@@ -19,4 +19,4 @@ PLAYER_HEIGHT = 100
 #= Speed-Constants =#
 #===================#
 
-DEFAULT_SPEED = 5
+DEFAULT_SPEED = 3
