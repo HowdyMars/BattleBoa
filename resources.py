@@ -26,6 +26,9 @@ class InitializeGame:
         self.items
         for item in self.items:
             item.set_random_position()
+            
+    def draw_text(self):
+        font_in_fill = pg.font.Font("BattleBoa/assets/fonts/8-bitArcadeIn.ttf", 20)
         
             
 class Movement():
@@ -65,6 +68,7 @@ class Movement():
             dx = self.speed
 
         return dx, dy
+    
         
 
         
