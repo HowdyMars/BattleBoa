@@ -14,7 +14,7 @@ class Character(pg.sprite.Sprite):
         start_y = start_y - self.original_dimensions[1] // 2
         self.rect = pg.Rect(start_x, start_y, 40, 40)
         self.segments = [self.rect] # This will be a list of all the segments of the snake
-        self.buffer_length = 7 # This is the buffer between segments
+        self.buffer_length = 4 # This is the buffer between segments
         self.positions = deque(maxlen=1000)
         self.last_dx = 0
         self.last_dy = c.DEFAULT_SPEED
@@ -55,19 +55,21 @@ class Character(pg.sprite.Sprite):
         return dx, dy
         
     def move(self, dx, dy):
-        dx, dy = 0,0
-        if self.player:
-            dx, dy = self.follow_mouse()
-        # move head
+        # Move head
         self.flip_rect(dx, dy)
         self.rect.move_ip(dx, dy)
-        # Store the new head position in the positions deque
+        # Always store the new head position in the positions deque
         self.positions.appendleft(self.segments[0].topleft)
-        # Move each segment to its new position based on the positions in the deque
+        # Move each segment to its new position based on the positions in the deque and the buffer length
         for i, segment in enumerate(self.segments[1:], start=1):
-            segment.topleft = self.positions[i * self.buffer_length]
-            ic(segment.topleft)
+            if i * self.buffer_length < len(self.positions):
+                segment.topleft = self.positions[i * self.buffer_length]
+        # Ensure the deque doesn't store unnecessary positions
+        max_positions_needed = (len(self.segments) - 1) * self.buffer_length
+        while len(self.positions) > max_positions_needed:
+            self.positions.pop()
         return dx, dy
+
             
     def grow(self, dx, dy):
         tail = self.segments[-1].copy() # get the last segment
@@ -105,40 +107,21 @@ class Character(pg.sprite.Sprite):
 
     def ai(self, items):
         dx, dy = 0, 0
-        # Distance from boundaries
-        dist_left = self.rect.left
-        dist_right = 800 - self.rect.right
-        dist_top = self.rect.top
-        dist_bottom = 600 - self.rect.bottom
-        
-        # Decide if the snake needs to change direction due to proximity to a boundary
-        if dist_left < c.DEFAULT_SPEED:
-            dy = c.DEFAULT_SPEED if self.rect.centery <= 300 else -c.DEFAULT_SPEED
-            dx = 0
-        elif dist_right < c.DEFAULT_SPEED:
-            dy = c.DEFAULT_SPEED if self.rect.centery <= 300 else -c.DEFAULT_SPEED
-            dx = 0
-        elif dist_top < c.DEFAULT_SPEED:
-            dx = c.DEFAULT_SPEED if self.rect.centerx <= 400 else -c.DEFAULT_SPEED
-            dy = 0
-        elif dist_bottom < c.DEFAULT_SPEED:
-            dx = c.DEFAULT_SPEED if self.rect.centerx <= 400 else -c.DEFAULT_SPEED
-            dy = 0
-        else:
-            if not self.target_item or self.frames_since_last_item > 100:
-                self.target_item = random.choice(items)
-                self.frames_since_last_item = 0
 
-            # AI logic to follow the item
-            if self.rect.centery < self.target_item.rect.centery:
-                dy = c.DEFAULT_SPEED
-            elif self.rect.centery > self.target_item.rect.centery:
-                dy = -c.DEFAULT_SPEED
-            if self.rect.centerx < self.target_item.rect.centerx:
-                dx = c.DEFAULT_SPEED
-            elif self.rect.centerx > self.target_item.rect.centerx:
-                dx = -c.DEFAULT_SPEED
-            
-            self.frames_since_last_item += 1  # Update the instance attribute
-            
+        if not self.target_item or self.frames_since_last_item > 100:
+            self.target_item = random.choice(items)
+            self.frames_since_last_item = 0
+
+        # AI logic to follow the item
+        if self.rect.centery < self.target_item.rect.centery:
+            dy = c.DEFAULT_SPEED
+        elif self.rect.centery > self.target_item.rect.centery:
+            dy = -c.DEFAULT_SPEED
+        if self.rect.centerx < self.target_item.rect.centerx:
+            dx = c.DEFAULT_SPEED
+        elif self.rect.centerx > self.target_item.rect.centerx:
+            dx = -c.DEFAULT_SPEED
+        
+        self.frames_since_last_item += 1  # Update the instance attribute
+        
         return dx, dy
