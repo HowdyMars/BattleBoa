@@ -3,6 +3,7 @@
 import pygame as pg
 import constants as c
 from resources import InitializeGame # I am initializing all the game resources in this module | keeping main.py clean
+from icecream import ic
 
 game = InitializeGame()
 
@@ -43,7 +44,7 @@ while running:
     # # Draw a rectangle to represent the player
     player.draw(screen)
     # Draw a rectangle to represent the player2
-    player2.draw(screen)
+    player2.draw(screen, c.PLAYER_RECT_BLUE)
     
     # Draw a rectangle to represent the item
     for item in items:
@@ -58,10 +59,17 @@ while running:
     if player.check_collision():
         game.restart_game()
         
-    # Check for collision with [player2]
-    # for segment in player2.segments:
-    #     if player.segments[0].colliderect(segment):
-    #         game.restart_game()
+    #Check for collision with [player2]
+    for segment in player2.segments:
+        if player.segments[0].colliderect(segment):
+            ic("You Lose!")
+            game.restart_game()
+    # Check for collision with [player]
+    for segment in player.segments:
+        if player2.segments[0].colliderect(segment):
+            ic("You Win!")
+            game.restart_game()
+            
     # # Check for collision with item
     for item in items:
         if player.segments[0].colliderect(item.rect):

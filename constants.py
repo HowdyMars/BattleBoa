@@ -7,6 +7,7 @@
 BG_BLACK = (0, 0, 0)
 PLAYER_RECT_RED = (255, 0, 0)
 PLAYER_RECT_GREEN = (0, 255, 0)
+PLAYER_RECT_BLUE = (0, 0, 255)
 
 #==================#
 #= Game-Constants =#

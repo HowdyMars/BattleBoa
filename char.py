@@ -6,7 +6,7 @@ from icecream import ic
 import random
 
 class Character(pg.sprite.Sprite):
-    def __init__(self, start_x=400, start_y=300, player=False):
+    def __init__(self, start_x=500, start_y=500, player=False):
         super().__init__()  # This is another way to call the parent class's __init__ method
         self.player = player
         self.original_dimensions = (40, 40) # width, height to test
@@ -34,11 +34,11 @@ class Character(pg.sprite.Sprite):
             self.direction = new_direction
     
     # define draw method
-    def draw(self, screen):
+    def draw(self, screen, color=c.PLAYER_RECT_GREEN):
         # head = self.segments[0]
         # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
         for segment in self.segments:
-            pg.draw.rect(screen, c.PLAYER_RECT_GREEN, segment)
+            pg.draw.rect(screen, color, segment)
             
     def follow_mouse(self):
         mouse_x, mouse_y = pg.mouse.get_pos()
@@ -87,10 +87,10 @@ class Character(pg.sprite.Sprite):
         
     def check_collision(self):
         # Check left and right boundaries
-        if self.segments[0].left < 0 or self.segments[0].right > 800:
+        if self.segments[0].left < 0 or self.segments[0].right > 1000:
             return True
         # Check top and bottom boundaries
-        if self.segments[0].top < 0 or self.segments[0].bottom > 600:
+        if self.segments[0].top < 0 or self.segments[0].bottom > 1000:
             return True
         # # Check for collision with self
         # head_rect_centered = pg.Rect(

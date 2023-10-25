@@ -7,7 +7,7 @@ from item import Item
 class InitializeGame:
     def __init__(self):
         self.init = pg.init()
-        self.screen = pg.display.set_mode((800, 600), pg.HWSURFACE | pg.DOUBLEBUF | pg.SCALED, vsync=1)
+        self.screen = pg.display.set_mode((1000, 1000), pg.HWSURFACE | pg.DOUBLEBUF | pg.SCALED, vsync=1)
         self.clock = pg.time.Clock()
         self.player = Character(player=True)
         self.player2 = Character(400, 300)
