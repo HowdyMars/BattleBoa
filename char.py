@@ -2,6 +2,8 @@
 import pygame as pg
 import constants as c
 from collections import deque
+from icecream import ic
+import random
 
 class Character(pg.sprite.Sprite):
     def __init__(self, start_x=400, start_y=300, player=False):
@@ -16,6 +18,8 @@ class Character(pg.sprite.Sprite):
         self.positions = deque(maxlen=1000)
         self.last_dx = 0
         self.last_dy = c.DEFAULT_SPEED
+        self.target_item = None
+        self.frames_since_last_item = 0
         
     def flip_rect(self, dx, dy): # for testing
         if dx != 0:  # Moving horizontally
@@ -41,16 +45,13 @@ class Character(pg.sprite.Sprite):
         # Calculate the difference between the mouse and the player position
         dx = mouse_x - self.rect.centerx
         dy = mouse_y - self.rect.centery
-
         # Normalize the movement if it's greater than the character's speed
         magnitude = (dx ** 2 + dy ** 2) ** 0.5
         if magnitude > 0:
             dx, dy = (dx / magnitude) * c.DEFAULT_SPEED, (dy / magnitude) * c.DEFAULT_SPEED
             self.last_dx, self.last_dy = dx, dy
-            
         else:
             dx, dy = self.last_dx, self.last_dy
-
         return dx, dy
         
     def move(self, dx, dy):
@@ -65,6 +66,8 @@ class Character(pg.sprite.Sprite):
         # Move each segment to its new position based on the positions in the deque
         for i, segment in enumerate(self.segments[1:], start=1):
             segment.topleft = self.positions[i * self.buffer_length]
+            ic(segment.topleft)
+        return dx, dy
             
     def grow(self, dx, dy):
         tail = self.segments[-1].copy() # get the last segment
@@ -99,9 +102,8 @@ class Character(pg.sprite.Sprite):
         #         if head_rect_centered.colliderect(segment):
         #             return True
         #     return False
-        
 
-    def ai(self, screen, item):
+    def ai(self, items):
         dx, dy = 0, 0
         # Distance from boundaries
         dist_left = self.rect.left
@@ -110,27 +112,33 @@ class Character(pg.sprite.Sprite):
         dist_bottom = 600 - self.rect.bottom
         
         # Decide if the snake needs to change direction due to proximity to a boundary
-        if dist_left < c.DEFAULT_SPEED and dx == -c.DEFAULT_SPEED:
+        if dist_left < c.DEFAULT_SPEED:
             dy = c.DEFAULT_SPEED if self.rect.centery <= 300 else -c.DEFAULT_SPEED
             dx = 0
-        elif dist_right < c.DEFAULT_SPEED and dx == c.DEFAULT_SPEED:
+        elif dist_right < c.DEFAULT_SPEED:
             dy = c.DEFAULT_SPEED if self.rect.centery <= 300 else -c.DEFAULT_SPEED
             dx = 0
-        elif dist_top < c.DEFAULT_SPEED and dy == -c.DEFAULT_SPEED:
+        elif dist_top < c.DEFAULT_SPEED:
             dx = c.DEFAULT_SPEED if self.rect.centerx <= 400 else -c.DEFAULT_SPEED
             dy = 0
-        elif dist_bottom < c.DEFAULT_SPEED and dy == c.DEFAULT_SPEED:
+        elif dist_bottom < c.DEFAULT_SPEED:
             dx = c.DEFAULT_SPEED if self.rect.centerx <= 400 else -c.DEFAULT_SPEED
             dy = 0
         else:
-            # Original AI logic
-            if self.rect.centery < item.rect.centery:
+            if not self.target_item or self.frames_since_last_item > 100:
+                self.target_item = random.choice(items)
+                self.frames_since_last_item = 0
+
+            # AI logic to follow the item
+            if self.rect.centery < self.target_item.rect.centery:
                 dy = c.DEFAULT_SPEED
-            elif self.rect.centery > item.rect.centery:
+            elif self.rect.centery > self.target_item.rect.centery:
                 dy = -c.DEFAULT_SPEED
-            if self.rect.centerx < item.rect.centerx:
+            if self.rect.centerx < self.target_item.rect.centerx:
                 dx = c.DEFAULT_SPEED
-            elif self.rect.centerx > item.rect.centerx:
+            elif self.rect.centerx > self.target_item.rect.centerx:
                 dx = -c.DEFAULT_SPEED
-                
+            
+            self.frames_since_last_item += 1  # Update the instance attribute
+            
         return dx, dy

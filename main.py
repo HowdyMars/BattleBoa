@@ -23,9 +23,32 @@ running = True
 #==================#
 
 while running:
+    # set the game clock
+    clock.tick(60) # 60 fps
     
     # Clear the screen with fill
     screen.fill(c.BG_BLACK)
+    
+    # Player movement and AI movement
+    player_dx, player_dy = player.follow_mouse()
+    player.move(player_dx, player_dy)
+    
+    ai_dx, ai_dy = player2.ai(items)
+    player2.move(ai_dx, ai_dy)
+    
+#================#
+#= Draw-Screen- =#
+#================#
+
+    # # Draw a rectangle to represent the player
+    player.draw(screen)
+    # Draw a rectangle to represent the player2
+    player2.draw(screen)
+    
+    # Draw a rectangle to represent the item
+    for item in items:
+        item.draw(screen)
+
 
 #==================#
 #= Event-Handling =#
@@ -43,22 +66,16 @@ while running:
     for item in items:
         if player.segments[0].colliderect(item.rect):
             item.set_random_position()
-            player.grow(dx, dy)
+            player.grow(player_dx, player_dy)
         if player2.segments[0].colliderect(item.rect):
             item.set_random_position()
-            player2.grow(dx, dy)
+            player2.grow(ai_dx, ai_dy)
         
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
             
-    # movement_handler.update_direction(pg.key.get_pressed())
-    # dx, dy = movement_handler.move()
-    dx, dy = player.follow_mouse()
-    player.move(dx,dy)    
-    # ai_dx, ai_dy = player2.ai(screen, items[0])
-    # player2.move(ai_dx, ai_dy)
-            
+
 #================#
 #= Key-Handling =#
 #================#
@@ -67,22 +84,7 @@ while running:
     if keys[pg.K_ESCAPE]:
         running = False
 
-#================#
-#= Draw-Screen- =#
-#================#
 
-    # # Draw a rectangle to represent the player
-    player.draw(screen)
-    # Draw a rectangle to represent the player2
-    # player2.draw(screen)
-    
-    # Draw a rectangle to represent the item
-    for item in items:
-        item.draw(screen)
-
-    # set the game clock
-    clock.tick(60) # 60 fps
-    
     pg.display.flip()
     
 #==================#

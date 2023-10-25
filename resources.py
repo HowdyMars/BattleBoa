@@ -12,6 +12,8 @@ class InitializeGame:
         self.player = Character(player=True)
         self.player2 = Character(400, 300)
         self.items = Item.create_item()
+        for item in self.items:
+            item.set_random_position()
         self.display_caption = pg.display.set_caption("BattleBoa")
         self.screen_fill = self.screen.fill(c.BG_BLACK)
         self.movement_handler = Movement()
@@ -21,10 +23,11 @@ class InitializeGame:
         # reinitalize the player and item
         self.player.__init__(player=True)
         self.player2.__init__(400, 300)
-        self.items = Item.create_item()
+        self.items
         for item in self.items:
-            print(item.rect.topleft)
             item.set_random_position()
+        
+            
 class Movement():
     def __init__(self, speed=c.DEFAULT_SPEED):   # setting a default speed of 5
         self.x, self.y = 0, 0
