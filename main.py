@@ -28,7 +28,7 @@ while running:
     clock.tick(60) # 60 fps
     
     # Clear the screen with fill
-    screen.fill(c.BG_BLACK)
+    screen.fill(c.BLACK)
     
     # Player movement and AI movement
     player_dx, player_dy = player.follow_mouse()
@@ -41,10 +41,13 @@ while running:
 #= Draw-Screen- =#
 #================#
 
+    # Text Test
+    game.draw_text("BattleBoa", "infill" , 500, 20, c.YELLOW, 100)
+
     # # Draw a rectangle to represent the player
     player.draw(screen)
     # Draw a rectangle to represent the player2
-    player2.draw(screen, c.PLAYER_RECT_BLUE)
+    player2.draw(screen, c.BLUE)
     
     # Draw a rectangle to represent the item
     for item in items:

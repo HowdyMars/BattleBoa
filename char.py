@@ -34,7 +34,7 @@ class Character(pg.sprite.Sprite):
             self.direction = new_direction
     
     # define draw method
-    def draw(self, screen, color=c.PLAYER_RECT_GREEN):
+    def draw(self, screen, color=c.GREEN):
         # head = self.segments[0]
         # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
         for segment in self.segments:

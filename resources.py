@@ -15,7 +15,7 @@ class InitializeGame:
         for item in self.items:
             item.set_random_position()
         self.display_caption = pg.display.set_caption("BattleBoa")
-        self.screen_fill = self.screen.fill(c.BG_BLACK)
+        self.screen_fill = self.screen.fill(c.BLACK)
         self.movement_handler = Movement()
 
 
@@ -27,8 +27,14 @@ class InitializeGame:
         for item in self.items:
             item.set_random_position()
             
-    def draw_text(self):
-        font_in_fill = pg.font.Font("BattleBoa/assets/fonts/8-bitArcadeIn.ttf", 20)
+    def draw_text(self, text, font, x, y, color=c.WHITE, size=60):
+        font_path = c.FONTS.get(font, c.FONTS["default"])
+        font_style = pg.font.Font(font_path, size)
+        txt = font_style.render(text, True, color)
+        textRect = txt.get_rect()
+        textRect.center = (x, y)
+        
+        self.screen.blit(txt, textRect)
         
             
 class Movement():

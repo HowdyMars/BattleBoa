@@ -9,7 +9,7 @@ class Item(pg.sprite.Sprite):
         self.rect = pg.Rect(200, 200, 30, 30)
 
     def draw(self, screen):
-        pg.draw.rect(screen, c.PLAYER_RECT_RED, self.rect)
+        pg.draw.rect(screen, c.RED, self.rect)
         
     def check_collision(self, player_rect):
         if self.rect.colliderect(player_rect):
