@@ -106,6 +106,10 @@ class Character(pg.sprite.Sprite):
         #     return False
 
     def ai(self, items):
+        '''TODO: study up on vector math to understand this better
+            This will be useful for pathfinding later on
+        '''
+        
         if not self.target_item or self.frames_since_last_item > 100:
             self.target_item = random.choice(items)
             self.frames_since_last_item = 0
