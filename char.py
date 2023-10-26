@@ -106,22 +106,21 @@ class Character(pg.sprite.Sprite):
         #     return False
 
     def ai(self, items):
-        dx, dy = 0, 0
-
         if not self.target_item or self.frames_since_last_item > 100:
             self.target_item = random.choice(items)
             self.frames_since_last_item = 0
 
-        # AI logic to follow the item
-        if self.rect.centery < self.target_item.rect.centery:
-            dy = c.DEFAULT_SPEED
-        elif self.rect.centery > self.target_item.rect.centery:
-            dy = -c.DEFAULT_SPEED
-        if self.rect.centerx < self.target_item.rect.centerx:
-            dx = c.DEFAULT_SPEED
-        elif self.rect.centerx > self.target_item.rect.centerx:
-            dx = -c.DEFAULT_SPEED
-        
-        self.frames_since_last_item += 1  # Update the instance attribute
+        # Calculate the direction vector towards the target item
+        dx = self.target_item.rect.centerx - self.rect.centerx
+        dy = self.target_item.rect.centery - self.rect.centery
+
+        # Normalize the direction vector
+        magnitude = (dx ** 2 + dy ** 2) ** 0.5
+        if magnitude > 0:
+            dx, dy = (dx / magnitude) * c.DEFAULT_SPEED, (dy / magnitude) * c.DEFAULT_SPEED
+        else:
+            dx, dy = 0, 0
+
+        self.frames_since_last_item += 1
         
         return dx, dy
