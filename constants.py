@@ -40,3 +40,7 @@ SOUNDS = {
     "hit_player": "assets/sound/Hit_long.wav",
     "oops": "assets/sound/Electronicoops_2.wav"
 }
+
+ITEMS = {
+    "food": "assets/images/Food-Sheet_2.png",
+}

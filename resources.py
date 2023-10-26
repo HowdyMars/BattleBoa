@@ -5,7 +5,7 @@ from char import Character
 from item import Item
 
 class InitializeGame:
-    def __init__(self):
+    def __init__(self,):
         self.init = pg.init()
         self.mixer_init = pg.mixer.init()
         self.screen = pg.display.set_mode((1000, 1000), pg.HWSURFACE | pg.DOUBLEBUF | pg.SCALED, vsync=1)
