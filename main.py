@@ -67,17 +67,20 @@ while running:
     for segment in player2.segments:
         if player.segments[0].colliderect(segment):
             ic("You Lose!")
+            game.sound_effects("oops", 0.2)
             game.restart_game()
     # Check for collision with [player]
     for segment in player.segments:
         if player2.segments[0].colliderect(segment):
             ic("You Win!")
+            game.sound_effects("hit_player", 0.2)
             game.restart_game()
             
     # # Check for collision with item
     for item in items:
         if item.check_collision(player.rect):
             item.set_random_position()
+            game.sound_effects("item_collected", 0.3)
             player.grow(player_dx, player_dy)
             item.handle_collected(player.rect)
         if item.text_float:

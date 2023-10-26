@@ -31,3 +31,12 @@ FONTS = {
     "default": "assets/fonts/8-bitArcadeOut.ttf",
     "infill": "assets/fonts/8-bitArcadeIn.ttf",
 }
+
+#===================#
+#= Sound-Constants =#
+#===================#
+SOUNDS = {
+    "item_collected": "assets/sound/Coin_7.wav",
+    "hit_player": "assets/sound/Hit_long.wav",
+    "oops": "assets/sound/Electronicoops_2.wav"
+}

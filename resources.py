@@ -7,6 +7,7 @@ from item import Item
 class InitializeGame:
     def __init__(self):
         self.init = pg.init()
+        self.mixer_init = pg.mixer.init()
         self.screen = pg.display.set_mode((1000, 1000), pg.HWSURFACE | pg.DOUBLEBUF | pg.SCALED, vsync=1)
         self.clock = pg.time.Clock()
         self.player = Character(player=True)
@@ -35,6 +36,12 @@ class InitializeGame:
         textRect.center = (x, y)
         
         self.screen.blit(txt, textRect)
+        
+    def sound_effects(self, sound, volume=0.5):
+        sound_path = c.SOUNDS.get(sound, c.SOUNDS["item_collected"])
+        sound = pg.mixer.Sound(sound_path)
+        sound.set_volume(volume)
+        sound.play()
         
             
 class Movement():
