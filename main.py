@@ -3,6 +3,7 @@
 import pygame as pg
 import constants as c
 from resources import InitializeGame # I am initializing all the game resources in this module | keeping main.py clean
+from item import Item
 from icecream import ic
 
 game = InitializeGame()
@@ -41,7 +42,7 @@ while running:
 #= Draw-Screen- =#
 #================#
 
-    # Text Test
+    # Title
     game.draw_text("BattleBoa", "infill" , 500, 20, c.YELLOW, 100)
 
     # # Draw a rectangle to represent the player
@@ -75,9 +76,17 @@ while running:
             
     # # Check for collision with item
     for item in items:
-        if player.segments[0].colliderect(item.rect):
+        if item.check_collision(player.rect):
             item.set_random_position()
             player.grow(player_dx, player_dy)
+            item.handle_collected(player.rect)
+        if item.text_float:
+            x = player.rect.centerx
+            y = item.text_start_y
+            game.draw_text("1", "infill", x, y, c.YELLOW, 60)
+            if item.handle_collected(player.rect):
+                item.text_float = False
+                
         if player2.segments[0].colliderect(item.rect):
             item.set_random_position()
             player2.grow(ai_dx, ai_dy)
