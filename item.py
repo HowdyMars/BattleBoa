@@ -6,7 +6,7 @@ import random
 class Item(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.food_images_path = c.ITEMS["food"]
+        self.food_images_path = c.SPRITES["food"]
         self.food_images = pg.image.load(self.food_images_path).convert_alpha()
         self.sprite = self.random_sprite()
         self.rect = pg.Rect(200, 200, 60, 60)

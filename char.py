@@ -20,6 +20,28 @@ class Character(pg.sprite.Sprite):
         self.last_dy = c.DEFAULT_SPEED
         self.target_item = None
         self.frames_since_last_item = 0
+        # Character Sprites
+        self.head_sprites = c.SPRITES["boa_head"]
+        self.body_sprites = c.SPRITES["boa_body"]
+        self.tail_sprites = c.SPRITES["boa_tail"]
+        self.boa_sprite = self.get_boa_sprite()
+    
+    def get_boa_sprite(self, frame, width, height, scale, color):
+        image = pg.Surface(([width, height]), pg.SRCALPHA).convert_alpha()
+        image.blit(frame, (0, 0), ((frame * width), 0, width, height))
+        image = pg.transform.scale(image, (width * scale, height * scale))
+        image.set_colorkey(color)
+    
+        return image
+    
+    # define draw method
+    def draw(self, screen, color=0):
+        # head = self.segments[0]
+        # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
+        for segment in self.segments:
+            screen.blit(self.boa_sprite(self.body_sprites[color], 16, 16, 4, c.BLACK), segment)
+        # for segment in self.segments:
+        #     pg.draw.rect(screen, color, segment)
         
     def flip_rect(self, dx, dy): # for testing
         if dx != 0:  # Moving horizontally
@@ -32,13 +54,6 @@ class Character(pg.sprite.Sprite):
         opposite_directions = {"UP": "DOWN", "DOWN": "UP", "LEFT": "RIGHT", "RIGHT": "LEFT"}
         if new_direction != opposite_directions[self.direction]:
             self.direction = new_direction
-    
-    # define draw method
-    def draw(self, screen, color=c.GREEN):
-        # head = self.segments[0]
-        # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
-        for segment in self.segments:
-            pg.draw.rect(screen, color, segment)
             
     def follow_mouse(self):
         mouse_x, mouse_y = pg.mouse.get_pos()

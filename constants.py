@@ -41,6 +41,9 @@ SOUNDS = {
     "oops": "assets/sound/Electronicoops_2.wav"
 }
 
-ITEMS = {
+SPRITES = {
     "food": "assets/images/Food-Sheet_2.png",
+    "boa_head": "assets/images/battleboa_head.png",
+    "boa_body": "assets/images/battleboa_segment.png",
+    "boa_tail": "assets/images/battleboa_tail.png",
 }
