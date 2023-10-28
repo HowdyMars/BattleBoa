@@ -14,7 +14,7 @@ screen = game.screen
 clock = game.clock
 screen_fill = game.screen_fill
 player = game.player
-# player2 = game.player2
+player2 = game.player2
 items = game.items
 movement_handler = game.movement_handler
 running = True
@@ -35,8 +35,8 @@ while running:
     player_dx, player_dy = player.follow_mouse()
     player.move(player_dx, player_dy)
     
-    # ai_dx, ai_dy = player2.ai(items)
-    # player2.move(ai_dx, ai_dy)
+    ai_dx, ai_dy = player2.ai(items)
+    player2.move(ai_dx, ai_dy)
     
 #================#
 #= Draw-Screen- =#
@@ -46,9 +46,9 @@ while running:
     game.draw_text("BattleBoa", "infill" , 500, 20, c.YELLOW, 100)
     
     # # # Draw a rectangle to represent the player
-    player.draw(screen, 0)
+    player.draw(screen, c.GREEN)
     # # Draw a rectangle to represent the player2
-    # player2.draw(screen, c.BLUE)
+    player2.draw(screen, c.BLUE)
     
     for item in items:
         item.draw(screen)
@@ -62,18 +62,18 @@ while running:
     if player.check_collision():
         game.restart_game()
         
-    #Check for collision with [player2]
-    # for segment in player2.segments:
-    #     if player.segments[0].colliderect(segment):
-    #         ic("You Lose!")
-    #         game.sound_effects("oops", 0.2)
-    #         game.restart_game()
-    # # Check for collision with [player]
-    # for segment in player.segments:
-    #     if player2.segments[0].colliderect(segment):
-    #         ic("You Win!")
-    #         game.sound_effects("hit_player", 0.2)
-    #         game.restart_game()
+    # Check for collision with [player2]
+    for segment in player2.segments:
+        if player.segments[0].colliderect(segment):
+            ic("You Lose!")
+            game.sound_effects("oops", 0.2)
+            game.restart_game()
+    # Check for collision with [player]
+    for segment in player.segments:
+        if player2.segments[0].colliderect(segment):
+            ic("You Win!")
+            game.sound_effects("hit_player", 0.2)
+            game.restart_game()
             
     # # Check for collision with item
     for item in items:
@@ -88,9 +88,9 @@ while running:
             if item.handle_collected(player.rect):
                 item.text_float = False
                 
-        # if player2.segments[0].colliderect(item.rect):
-        #     item.set_random_position()
-        #     player2.grow(ai_dx, ai_dy)
+        if player2.segments[0].colliderect(item.rect):
+            item.set_random_position()
+            player2.grow(ai_dx, ai_dy)
         
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -114,4 +114,3 @@ while running:
 
 pg.quit()
     
-

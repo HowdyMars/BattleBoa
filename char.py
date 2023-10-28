@@ -9,39 +9,17 @@ class Character(pg.sprite.Sprite):
     def __init__(self, start_x=500, start_y=500, player=False):
         super().__init__()  # This is another way to call the parent class's __init__ method
         self.player = player
-        self.original_dimensions = (40, 40) # width, height to test
+        self.original_dimensions = (30, 30) # width, height to test
         start_x = start_x - self.original_dimensions[0] // 2
         start_y = start_y - self.original_dimensions[1] // 2
-        self.rect = pg.Rect(start_x, start_y, 40, 40)
+        self.rect = pg.Rect(start_x, start_y, 30, 30)
         self.segments = [self.rect] # This will be a list of all the segments of the snake
-        self.buffer_length = 4 # This is the buffer between segments
+        self.buffer_length = 6 # This is the buffer between segments
         self.positions = deque(maxlen=1000)
         self.last_dx = 0
         self.last_dy = c.DEFAULT_SPEED
         self.target_item = None
         self.frames_since_last_item = 0
-        # Character Sprites
-        self.head_sprites = c.SPRITES["boa_head"]
-        self.body_sprites = c.SPRITES["boa_body"]
-        self.tail_sprites = c.SPRITES["boa_tail"]
-        self.boa_sprite = self.get_boa_sprite()
-    
-    def get_boa_sprite(self, frame, width, height, scale, color):
-        image = pg.Surface(([width, height]), pg.SRCALPHA).convert_alpha()
-        image.blit(frame, (0, 0), ((frame * width), 0, width, height))
-        image = pg.transform.scale(image, (width * scale, height * scale))
-        image.set_colorkey(color)
-    
-        return image
-    
-    # define draw method
-    def draw(self, screen, color=0):
-        # head = self.segments[0]
-        # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
-        for segment in self.segments:
-            screen.blit(self.boa_sprite(self.body_sprites[color], 16, 16, 4, c.BLACK), segment)
-        # for segment in self.segments:
-        #     pg.draw.rect(screen, color, segment)
         
     def flip_rect(self, dx, dy): # for testing
         if dx != 0:  # Moving horizontally
@@ -54,6 +32,13 @@ class Character(pg.sprite.Sprite):
         opposite_directions = {"UP": "DOWN", "DOWN": "UP", "LEFT": "RIGHT", "RIGHT": "LEFT"}
         if new_direction != opposite_directions[self.direction]:
             self.direction = new_direction
+    
+    # define draw method
+    def draw(self, screen, color=c.GREEN):
+        # head = self.segments[0]
+        # pg.draw.rect(screen, c.PLAYER_RECT_RED, head)
+        for segment in self.segments:
+            pg.draw.rect(screen, color, segment)
             
     def follow_mouse(self):
         mouse_x, mouse_y = pg.mouse.get_pos()

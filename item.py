@@ -57,7 +57,7 @@ class Item(pg.sprite.Sprite):
     def random_sprite(self):
         item_sprite_list = []
         for frame in range(7):
-            item_sprite_list.append(self.get_item_sprite(frame, 16, 16, 4, c.BLACK))
+            item_sprite_list.append(self.get_item_sprite(frame, 16, 16, 3, c.BLACK))
             
         return random.choice(item_sprite_list)
         
