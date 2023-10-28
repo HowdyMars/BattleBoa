@@ -18,7 +18,12 @@ player2 = game.player2
 items = game.items
 movement_handler = game.movement_handler
 running = True
-
+# Set the player's color
+player_color = c.GREEN
+player2_color = c.BLUE
+# Set the Score
+player_1_score = 0
+player_2_score = 0
 
 #==================#
 #= Main-Game-Loop =#
@@ -44,11 +49,15 @@ while running:
 
     # Title
     game.draw_text("BattleBoa", "infill" , 500, 20, c.YELLOW, 100)
+    # Score p1
+    game.draw_text(f"P1 Score {player_1_score}", "infill", 875, 25, player_color, 50)
+    # Score p2
+    game.draw_text(f"P2 Score {player_2_score}", "infill", 125, 25, player2_color, 50)
     
     # # # Draw a rectangle to represent the player
-    player.draw(screen, c.GREEN)
+    player.draw(screen, player_color)
     # # Draw a rectangle to represent the player2
-    player2.draw(screen, c.BLUE)
+    player2.draw(screen, player2_color)
     
     for item in items:
         item.draw(screen)
@@ -68,12 +77,16 @@ while running:
             ic("You Lose!")
             game.sound_effects("oops", 0.2)
             game.restart_game()
+            player_2_score = 0
+            player_1_score = 0
     # Check for collision with [player]
     for segment in player.segments:
         if player2.segments[0].colliderect(segment):
             ic("You Win!")
             game.sound_effects("hit_player", 0.2)
             game.restart_game()
+            player_1_score = 0
+            player_2_score = 0
             
     # # Check for collision with item
     for item in items:
@@ -81,6 +94,7 @@ while running:
             game.sound_effects("item_collected", 0.3)
             player.grow(player_dx, player_dy)
             item.handle_collected(player.rect)
+            player_1_score += 1
         if item.text_float:
             x = player.rect.centerx
             y = item.text_start_y
@@ -91,6 +105,7 @@ while running:
         if player2.segments[0].colliderect(item.rect):
             item.set_random_position()
             player2.grow(ai_dx, ai_dy)
+            player_2_score += 1
         
     for event in pg.event.get():
         if event.type == pg.QUIT:

@@ -43,7 +43,7 @@ class Item(pg.sprite.Sprite):
     
     def set_random_position(self):
         random_x = random.randint(0, 1000 - self.rect.width)
-        random_y = random.randint(0, 1000 - self.rect.height)
+        random_y = random.randint(100, 1000 - self.rect.height)
         self.rect.topleft = (random_x, random_y)
         
     def get_item_sprite(self, frame, width, height, scale, color):

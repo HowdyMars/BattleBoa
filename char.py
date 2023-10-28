@@ -9,10 +9,10 @@ class Character(pg.sprite.Sprite):
     def __init__(self, start_x=500, start_y=500, player=False):
         super().__init__()  # This is another way to call the parent class's __init__ method
         self.player = player
-        self.original_dimensions = (30, 30) # width, height to test
+        self.original_dimensions = (32, 32) # width, height to test
         start_x = start_x - self.original_dimensions[0] // 2
         start_y = start_y - self.original_dimensions[1] // 2
-        self.rect = pg.Rect(start_x, start_y, 30, 30)
+        self.rect = pg.Rect(start_x, start_y, 32, 32)
         self.segments = [self.rect] # This will be a list of all the segments of the snake
         self.buffer_length = 6 # This is the buffer between segments
         self.positions = deque(maxlen=1000)
@@ -21,18 +21,6 @@ class Character(pg.sprite.Sprite):
         self.target_item = None
         self.frames_since_last_item = 0
         
-    def flip_rect(self, dx, dy): # for testing
-        if dx != 0:  # Moving horizontally
-            self.rect.width, self.rect.height = self.original_dimensions
-        elif dy != 0:  # Moving vertically
-            self.rect.height, self.rect.width = self.original_dimensions
-        
-    def update_direction(self, new_direction):
-        # Ensure the snake can't reverse onto itself
-        opposite_directions = {"UP": "DOWN", "DOWN": "UP", "LEFT": "RIGHT", "RIGHT": "LEFT"}
-        if new_direction != opposite_directions[self.direction]:
-            self.direction = new_direction
-    
     # define draw method
     def draw(self, screen, color=c.GREEN):
         # head = self.segments[0]
@@ -55,8 +43,6 @@ class Character(pg.sprite.Sprite):
         return dx, dy
         
     def move(self, dx, dy):
-        # Move head
-        self.flip_rect(dx, dy)
         self.rect.move_ip(dx, dy)
         # Always store the new head position in the positions deque
         self.positions.appendleft(self.segments[0].topleft)
