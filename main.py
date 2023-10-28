@@ -50,9 +50,9 @@ while running:
     # Title
     game.draw_text("BattleBoa", "infill" , 500, 20, c.YELLOW, 100)
     # Score p1
-    game.draw_text(f"P1 Score {player_1_score}", "infill", 875, 25, player_color, 50)
+    game.draw_text(f"P2 Score {player_2_score}", "infill", 875, 25, player2_color, 50)
     # Score p2
-    game.draw_text(f"P2 Score {player_2_score}", "infill", 125, 25, player2_color, 50)
+    game.draw_text(f"P1 Score {player_1_score}", "infill", 125, 25, player_color, 50)
     
     # # # Draw a rectangle to represent the player
     player.draw(screen, player_color)
