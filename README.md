@@ -15,5 +15,6 @@ But wait, there's a twist! 🐍 Watch out for that sneaky computer-controlled sn
 
 ### Screen Shot
 
-![image](https://github.com/HowdyMars/BattleBoa/assets/67929344/2232c1be-a865-4860-a664-077c711fcc71)
+![image](https://github.com/HowdyMars/BattleBoa/assets/67929344/890cff6c-af3d-40be-b41a-7554ddbff29c)
+
 
